@@ -1,16 +1,28 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "medusa develop",
+    "start": "medusa start",
+    "init-db": "node init-db.js",
+    "create-tables": "node create-tables.js",
+    "start-custom": "node start-medusa.js",
+    "simple-server": "node simple-server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.15.1",
   "dependencies": {
-    "@medusajs/medusa": "^2.10.1"
+    "@medusajs/medusa": "^2.10.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@mikro-orm/core": "^6.4.3",
+    "@mikro-orm/knex": "^6.4.3",
+    "@mikro-orm/migrations": "^6.5.2",
+    "@mikro-orm/postgresql": "^6.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
   }
 }
