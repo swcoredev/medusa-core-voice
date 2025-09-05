@@ -6,17 +6,10 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:backend": "pnpm --filter backend dev",
-    "create-tables": "pnpm --filter backend create-tables",
-    "simple-server": "pnpm --filter backend simple-server"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.15.1",
-  "devDependencies": {
-    "cross-env": "^10.0.0",
-    "dotenv-cli": "^10.0.0"
-  }
+  "packageManager": "pnpm@10.15.1"
 }
