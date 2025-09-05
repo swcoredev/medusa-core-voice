@@ -107,3 +107,7 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+# Node modules
+node_modules/
+.pnpm/
+.pnp.*
