@@ -35,13 +35,13 @@
     "typescript": "^5.0.0"
   },
   "jest": {
-    "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
-      "**/src/tests/**/*.test.ts"
+      "**/src/tests/**/*.test.js"
     ],
     "collectCoverageFrom": [
       "src/**/*.ts",
+      "src/**/*.js",
       "!src/**/*.d.ts"
     ]
   }
