@@ -283,3 +283,116 @@ curl http://localhost:9000/health
 - API поддерживает CORS для интеграции с фронтендом
 - UUID генерируется автоматически для новых ассистентов
 - Timestamps обновляются автоматически при изменениях
+
+## 🆕 Extended API (Managed Marketplace)
+
+### Developers API
+
+#### Register Developer
+```bash
+curl -X POST http://localhost:9000/api/developers/register \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Max Dev", "email": "max@example.com"}'
+```
+
+#### Get All Developers
+```bash
+curl http://localhost:9000/api/developers
+```
+
+#### Upload Assistant by Developer
+```bash
+curl -X POST http://localhost:9000/api/developers/assistants \
+  -H "Content-Type: application/json" \
+  -d '{
+    "developer_id": "dev-001",
+    "name": "HotelBot",
+    "description": "Ассистент для бронирования номеров",
+    "category": "hotel",
+    "price": 49.99
+  }'
+```
+
+#### Get Developer's Assistants
+```bash
+curl "http://localhost:9000/api/developers/assistants?developer_id=dev-001"
+```
+
+### Status Management API
+
+#### Approve Assistant
+```bash
+curl -X PUT http://localhost:9000/api/voice-assistants/{id}/approve
+```
+
+#### Reject Assistant
+```bash
+curl -X PUT http://localhost:9000/api/voice-assistants/{id}/reject \
+  -H "Content-Type: application/json" \
+  -d '{"reason": "Описание слишком короткое"}'
+```
+
+#### Publish Assistant
+```bash
+curl -X PUT http://localhost:9000/api/voice-assistants/{id}/publish
+```
+
+### Assistant Status Flow
+1. **pending** - Newly uploaded by developer, awaiting approval
+2. **approved** - Approved by admin, ready for publication
+3. **rejected** - Rejected by admin
+4. **published** - Published and available to customers
+
+## 📊 Database Schema (Updated)
+
+### developers table
+```sql
+CREATE TABLE developers (
+  id VARCHAR(255) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### voice_assistants table (updated)
+```sql
+CREATE TABLE voice_assistants (
+  id VARCHAR(255) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  category VARCHAR(100),
+  price DECIMAL(10,2),
+  developer_id VARCHAR(255) REFERENCES developers(id),
+  status VARCHAR(50) DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## 🏪 Managed Marketplace Flow
+
+1. **Developer Registration**: Developers register via `/api/developers/register`
+2. **Assistant Upload**: Developers upload assistants via `/api/developers/assistants` (status: pending)
+3. **Admin Review**: Admin reviews and approves/rejects via `/api/voice-assistants/:id/approve` or `/api/voice-assistants/:id/reject`
+4. **Publication**: Approved assistants are published via `/api/voice-assistants/:id/publish`
+5. **Customer Access**: Published assistants are available to customers via `/api/voice-assistants`
+
+## 📋 Full API Documentation
+
+For complete API documentation with all endpoints, request/response examples, and error codes, see [API_DOCUMENTATION_EXTENDED.md](./API_DOCUMENTATION_EXTENDED.md).
+
+## 🧪 Testing
+
+Run all tests (including new Developers API and Status Management tests):
+```bash
+pnpm test
+```
+
+Tests include:
+- Voice Assistants CRUD operations (9 tests)
+- Developers API operations (5 tests)
+- Status Management operations (4 tests)
+
+**Total: 18 tests** ✅
